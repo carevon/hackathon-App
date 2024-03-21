@@ -1,5 +1,3 @@
-import { UUID } from "crypto";
-
 export interface GetIntraDayRecordInputDTO {
     registry_number:number, 
   }
@@ -12,5 +10,5 @@ export interface GetIntraDayRecordInputDTO {
   }
   
   export interface QueryParamsDTO {
-    registry_number: number;
+    paramId: number;
   }

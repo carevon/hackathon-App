@@ -1,8 +1,13 @@
 import DynamoGateway from "../gateway/DynamoGateway";
-import GetIntraDayRecord from "../use-cases/getIntraDayRecord/GetIntraDayRecord";
+import IGateway from "../interfaces/Gateway";
+import IUseCase from "../interfaces/UseCase";
+import GetTimeSheetReport from "../use-cases/getTimeSheetReport/get-time-sheet-report";
+import { getTimeSheetReportInput } from "../use-cases/getTimeSheetReport/getTimeSheetReportDTO";
 import SaveRecord from "../use-cases/saveRecord/save-record";
 import { SaveRecordInputDTO, SaveRecordOutputDTO } from "../use-cases/saveRecord/save-recordDTO";
-import { GetIntraDayRecordOutputDTO, GetIntraDayRecordInputDTO } from "../use-cases/getIntraDayRecord/GetIntraDayRecordDTO";
+
+import GetIntraDayRecord from "../use-cases/getIntraDayRecord/GetIntraDayRecord";
+import { GetIntraDayRecordInputDTO, GetIntraDayRecordOutputDTO, QueryParamsDTO } from "../use-cases/getIntraDayRecord/GetIntraDayRecordDTO";
 
 export default class AppointmentController {
    
@@ -16,10 +21,26 @@ export default class AppointmentController {
         return output;
     }
 
-    static async getIntraDayRecord(registry_number: number): Promise<any> {
-        const getIntraDayRecordUseCase: GetIntraDayRecord = new GetIntraDayRecord(new DynamoGateway());
+    static async generateMonthReport(employeNumber: number){
+      const input: getTimeSheetReportInput = {
+        employe_registry_number: employeNumber
+      };
+      const gateway: IGateway = new DynamoGateway();
+      const useCase: IUseCase = new GetTimeSheetReport(input, gateway);
+      const output: any = await useCase.execute();
+      console.log('output', output);
+      return output;
+    }
 
-        const output: GetIntraDayRecordOutputDTO = await this.getIntraDayRecord.execute(registry_number);
+    static async getIntraDayRecord(registry_number: number): Promise<any> {
+        const input: GetIntraDayRecordInputDTO = {
+          registry_number: registry_number
+        }
+
+        const gateway: IGateway = new DynamoGateway();
+        const useCase: IUseCase = new GetIntraDayRecord(input, gateway);
+        const output: any = await useCase.execute();
+        console.log('output:', output);
         return output;
     }
 

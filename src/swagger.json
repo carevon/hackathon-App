@@ -1,1 +1,122 @@
- {}
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Hackathon | Ponto Eletrônico",
+      "description": "API Documentation",
+      "version": "1.0.0"
+    },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "paths": {
+      "/report/{employe_registry_number}": {
+        "get": {
+          "tags": [
+            "Report"
+          ],
+          "summary": "Generate report",
+          "description": "Returns time sheet of the last month",
+          "operationId": "get report",
+          "parameters": [
+            {
+              "name": "employe_registry_number",
+              "in": "path",
+              "description": "Employe Registry Number",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Relatório gerado com sucesso"
+            },
+            "400": {
+              "description": "Erro ao gerar relatório"
+            }
+          }
+        }
+      },
+      "/appointments":{
+        "post":{
+          "tags": [
+            "Appointment"
+          ],
+          "requestBody":{
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "registry_number": {
+                      "type": "number",
+                      "required": true
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "Exemplo de corpo de requisição",
+                    "value": {
+                      "registry_number":5566
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Registro de ponto efetuado com sucesso"
+            },
+            "400": {
+              "description": "Erro ao efetuar registro de ponto"
+            }
+          },
+          "summary": "Save new appointment"
+        }
+    },
+    "/getIntraDayRecords/{registry_number}": {
+        "get": {
+          "tags": [
+            "Appointment"
+          ],
+          "summary": "Generate Intraday Records Report",
+          "description": "Returns intraday timesheet records",
+          "operationId": "get report",
+          "parameters": [
+            {
+              "name": "registry_number",
+              "in": "path",
+              "description": "Employee Registry Number",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Relatório gerado com sucesso"
+            },
+            "400": {
+              "description": "Erro ao gerar relatório"
+            }
+          }
+        }
+      }
+    }
+  }

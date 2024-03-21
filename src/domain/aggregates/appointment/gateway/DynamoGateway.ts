@@ -31,8 +31,7 @@ export default class DynamoGateway implements IGateway{
       let record : TimeSheetRecord = new TimeSheetRecord(
         new Date(), 
         registry_number, 
-        chaveAleatoria,
-        RecordType.Entrada
+        chaveAleatoria
       );
 
       let input = {
@@ -48,13 +47,35 @@ export default class DynamoGateway implements IGateway{
       return response;
     }
 
-    async getRecordsByUserId(registry_number: number): Promise<TimeSheetRecord[]> {
-      // Mock de dados de exemplo
-      const chaveAleatoria: UUID = uuidv4() as UUID;
-      const mockedData: TimeSheetRecord[] = [
-          new TimeSheetRecord(new Date(), 1, chaveAleatoria, RecordType.Entrada),
-          new TimeSheetRecord(new Date(), 2, chaveAleatoria, RecordType.Saida)
-      ];
-      return Promise.resolve(mockedData);
+    async getAll(): Promise<any> {
+      const params = {
+        TableName: this.table,
+      };
+      const scanResult = await this.dynamodb.scan(params);
+      console.log('scanResult',scanResult);
+      return scanResult?.Items;
+    }
+
+    async getIntradayRecordsByRegistryNumber(registry_number: number): Promise<any> {
+
+      let input = {
+        registry_number: registry_number
+      };
+
+      const params = {
+        TableName: this.table,
+        Item: input,
+      };
+
+      const result = await this.dynamodb.scan(params);
+      console.log('Result:', result);
+      // // Mock de dados de exemplo
+      // const chaveAleatoria: UUID = uuidv4() as UUID;
+      // const mockedData: TimeSheetRecord[] = [
+      //     new TimeSheetRecord(new Date(), registry_number, chaveAleatoria),
+      //     new TimeSheetRecord(new Date(), registry_number, chaveAleatoria)
+      // ];
+      // return Promise.resolve(mockedData);
+      return result?.Items;
   }
 }

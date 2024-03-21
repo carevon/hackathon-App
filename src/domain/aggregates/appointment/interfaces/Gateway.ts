@@ -1,8 +1,7 @@
-import TimeSheetRecord from "../entities/TimeSheetRecord";
-
 export default interface IGateway {
     createAppointment(
         registry_number:number, 
-    ) : Promise<any>
-    getRecordsByUserId(registry_number: number): Promise<TimeSheetRecord[]>;
+    ) : Promise<any>;
+    getAll():Promise<any>;
+    getIntradayRecordsByRegistryNumber(registry_number: number): Promise<any>;
 }

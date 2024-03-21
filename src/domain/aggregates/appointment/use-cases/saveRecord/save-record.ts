@@ -18,7 +18,7 @@ export default class SaveRecord implements IUseCase{
         try{
         const result = await this.gateway.createAppointment(
             input.registry_number,
-            );          
+            );
             let output:SaveRecordOutputDTO = {
                 hasError: false,
                 message: 'Appointment inserted successfully',
